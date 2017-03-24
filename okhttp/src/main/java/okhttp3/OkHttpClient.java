@@ -120,7 +120,7 @@ import okhttp3.internal.ws.RealWebSocket;
  */
 public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory {
   static final List<Protocol> DEFAULT_PROTOCOLS = Util.immutableList(
-      Protocol.HTTP_2, Protocol.HTTP_1_1);
+      Protocol.HTTP_2, Protocol.HTTP_1_1 , Protocol.OT_TCP_1_0);
 
   static final List<ConnectionSpec> DEFAULT_CONNECTION_SPECS = Util.immutableList(
       ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT);

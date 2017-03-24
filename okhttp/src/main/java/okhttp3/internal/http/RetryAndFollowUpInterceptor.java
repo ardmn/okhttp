@@ -195,8 +195,8 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
     }
 
     return new Address(url.host(), url.port(), client.dns(), client.socketFactory(),
-        sslSocketFactory, hostnameVerifier, certificatePinner, client.proxyAuthenticator(),
-        client.proxy(), client.protocols(), client.connectionSpecs(), client.proxySelector());
+            sslSocketFactory, hostnameVerifier, certificatePinner, client.proxyAuthenticator(),
+            client.proxy(), client.protocols(), client.connectionSpecs(), client.proxySelector(), url.isTcp());
   }
 
   /**

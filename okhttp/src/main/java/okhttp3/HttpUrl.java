@@ -392,6 +392,10 @@ public final class HttpUrl {
     return scheme.equals("https");
   }
 
+  public boolean isTcp() {
+    return scheme.equals("tcp");
+  }
+
   /**
    * Returns the username, or an empty string if none is set.
    *
@@ -506,6 +510,8 @@ public final class HttpUrl {
       return 80;
     } else if (scheme.equals("https")) {
       return 443;
+    }else if (scheme.equals("tcp")) {
+      return 4500;
     } else {
       return -1;
     }
@@ -966,6 +972,8 @@ public final class HttpUrl {
         this.scheme = "http";
       } else if (scheme.equalsIgnoreCase("https")) {
         this.scheme = "https";
+      } else if (scheme.equalsIgnoreCase("tcp")) {
+        this.scheme = "tcp";
       } else {
         throw new IllegalArgumentException("unexpected scheme: " + scheme);
       }
@@ -1300,6 +1308,9 @@ public final class HttpUrl {
         } else if (input.regionMatches(true, pos, "http:", 0, 5)) {
           this.scheme = "http";
           pos += "http:".length();
+        }else if (input.regionMatches(true, pos,"tcp:", 0, 4)) {
+          this.scheme = "tcp";
+          pos += "tcp:".length();
         } else {
           return ParseResult.UNSUPPORTED_SCHEME; // Not an HTTP scheme.
         }

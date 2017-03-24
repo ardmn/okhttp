@@ -83,6 +83,42 @@ public final class Address {
     this.certificatePinner = certificatePinner;
   }
 
+  public Address(String uriHost, int uriPort, Dns dns, SocketFactory socketFactory,
+                 SSLSocketFactory sslSocketFactory, HostnameVerifier hostnameVerifier,
+                 CertificatePinner certificatePinner, Authenticator proxyAuthenticator, Proxy proxy,
+                 List<Protocol> protocols, List<ConnectionSpec> connectionSpecs, ProxySelector proxySelector,boolean isTcp) {
+    this.url = new HttpUrl.Builder()
+            .scheme(sslSocketFactory != null ? "https" : isTcp ? "tcp" :"http")
+            .host(uriHost)
+            .port(uriPort)
+            .build();
+
+    if (dns == null) throw new NullPointerException("dns == null");
+    this.dns = dns;
+
+    if (socketFactory == null) throw new NullPointerException("socketFactory == null");
+    this.socketFactory = socketFactory;
+
+    if (proxyAuthenticator == null) {
+      throw new NullPointerException("proxyAuthenticator == null");
+    }
+    this.proxyAuthenticator = proxyAuthenticator;
+
+    if (protocols == null) throw new NullPointerException("protocols == null");
+    this.protocols = Util.immutableList(protocols);
+
+    if (connectionSpecs == null) throw new NullPointerException("connectionSpecs == null");
+    this.connectionSpecs = Util.immutableList(connectionSpecs);
+
+    if (proxySelector == null) throw new NullPointerException("proxySelector == null");
+    this.proxySelector = proxySelector;
+
+    this.proxy = proxy;
+    this.sslSocketFactory = sslSocketFactory;
+    this.hostnameVerifier = hostnameVerifier;
+    this.certificatePinner = certificatePinner;
+  }
+
   /**
    * Returns a URL with the hostname and port of the origin server. The path, query, and fragment of
    * this URL are always empty, since they are not significant for planning a route.

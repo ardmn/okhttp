@@ -59,7 +59,12 @@ public enum Protocol {
    * that enforce this may send an exception message including the string {@code
    * INADEQUATE_SECURITY}.
    */
-  HTTP_2("h2");
+  HTTP_2("h2"),
+
+  /**
+   * Проток для общения с тервером onetrak через tcp
+   */
+  OT_TCP_1_0("ot_tcp/1.0");
 
   private final String protocol;
 
@@ -77,6 +82,7 @@ public enum Protocol {
     if (protocol.equals(HTTP_1_0.protocol)) return HTTP_1_0;
     if (protocol.equals(HTTP_1_1.protocol)) return HTTP_1_1;
     if (protocol.equals(HTTP_2.protocol)) return HTTP_2;
+    if (protocol.equals(OT_TCP_1_0.protocol)) return OT_TCP_1_0;
     if (protocol.equals(SPDY_3.protocol)) return SPDY_3;
     throw new IOException("Unexpected protocol: " + protocol);
   }

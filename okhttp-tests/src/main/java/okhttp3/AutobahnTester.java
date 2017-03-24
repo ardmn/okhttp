@@ -31,7 +31,28 @@ public final class AutobahnTester {
   private static final String HOST = "ws://localhost:9099";
 
   public static void main(String... args) throws IOException {
-    new AutobahnTester().run();
+    //new AutobahnTester().run();
+
+    AutobahnTester main = new AutobahnTester();
+    try {
+      System.out.println(main.yandexTest("tcp://localhost/"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  public static final MediaType MEDIA_TYPE_MARKDOWN
+          = MediaType.parse("text/x-markdown; charset=utf-8");
+
+  OkHttpClient clientYandexTest = new OkHttpClient();
+
+  String yandexTest(String url) throws IOException {
+    Request request = new Request.Builder()
+            .url(url)
+            .post(RequestBody.create(MEDIA_TYPE_MARKDOWN,"hello"))
+            .build();
+
+    Response response = clientYandexTest.newCall(request).execute();
+    return response.body().string();
   }
 
   final OkHttpClient client = new OkHttpClient();

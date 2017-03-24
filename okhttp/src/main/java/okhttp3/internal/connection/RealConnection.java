@@ -55,6 +55,7 @@ import okhttp3.internal.http2.Http2Codec;
 import okhttp3.internal.http2.Http2Connection;
 import okhttp3.internal.http2.Http2Stream;
 import okhttp3.internal.platform.Platform;
+import okhttp3.internal.tcp.OtTcp1Codec;
 import okhttp3.internal.tls.OkHostnameVerifier;
 import okhttp3.internal.ws.RealWebSocket;
 import okio.BufferedSink;
@@ -230,8 +231,13 @@ public final class RealConnection extends Http2Connection.Listener implements Co
 
   private void establishProtocol(ConnectionSpecSelector connectionSpecSelector) throws IOException {
     if (route.address().sslSocketFactory() == null) {
-      protocol = Protocol.HTTP_1_1;
-      socket = rawSocket;
+
+      if("tcp".equals(route.address().url().scheme()))
+        protocol =  Protocol.OT_TCP_1_0;
+      else
+        protocol = Protocol.HTTP_1_1;
+
+      socket = rawSocket; //нужно подставлять правильную версию протокола
       return;
     }
 
@@ -442,7 +448,11 @@ public final class RealConnection extends Http2Connection.Listener implements Co
       socket.setSoTimeout(client.readTimeoutMillis());
       source.timeout().timeout(client.readTimeoutMillis(), MILLISECONDS);
       sink.timeout().timeout(client.writeTimeoutMillis(), MILLISECONDS);
-      return new Http1Codec(client, streamAllocation, source, sink);
+
+      if(protocol == Protocol.OT_TCP_1_0)
+        return new OtTcp1Codec(client, streamAllocation, source, sink);
+      else
+        return new Http1Codec(client, streamAllocation, source, sink);
     }
   }
 

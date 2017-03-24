@@ -72,7 +72,7 @@ public final class CacheInterceptor implements Interceptor {
     if (networkRequest == null && cacheResponse == null) {
       return new Response.Builder()
           .request(chain.request())
-          .protocol(Protocol.HTTP_1_1)
+          .protocol(chain.connection().protocol() == Protocol.OT_TCP_1_0 ? Protocol.OT_TCP_1_0 : Protocol.HTTP_1_1)
           .code(504)
           .message("Unsatisfiable Request (only-if-cached)")
           .body(Util.EMPTY_RESPONSE)
